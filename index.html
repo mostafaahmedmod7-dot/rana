@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مصطفى و رنا</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Vazirmatn:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+  :root{
+    --cream:#FBF3EE;
+    --cream-deep:#F4E6DE;
+    --rose:#E3A6A0;
+    --rose-soft:#EFC3BE;
+    --deep-rose:#B86F6A;
+    --gold:#C9A66B;
+    --ink:#4A3535;
+    --ink-soft:#8A6F6A;
+    --white:#FFFDFB;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  body{
+    font-family:'Vazirmatn',sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    line-height:1.8;
+    overflow-x:hidden;
+  }
+
+  h1,h2,h3,.display{
+    font-family:'Aref Ruqaa',serif;
+    font-weight:700;
+  }
+
+  .hearts-bg{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    overflow:hidden;
+  }
+  .heart{
+    position:absolute;
+    bottom:-40px;
+    opacity:0.35;
+    color:var(--rose-soft);
+    animation:floatUp linear infinite;
+    font-size:22px;
+  }
+  @keyframes floatUp{
+    0%{transform:translateY(0) translateX(0) rotate(0deg);opacity:0;}
+    10%{opacity:0.35;}
+    90%{opacity:0.35;}
+    100%{transform:translateY(-110vh) translateX(20px) rotate(20deg);opacity:0;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .heart{animation:none;display:none;}
+  }
+
+  section{
+    position:relative;
+    z-index:1;
+    padding:100px 24px;
+    max-width:900px;
+    margin:0 auto;
+  }
+
+  .hero{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:60px 24px;
+    background:radial-gradient(ellipse at top, var(--cream-deep) 0%, var(--cream) 60%);
+  }
+
+  .hero .eyebrow{
+    color:var(--deep-rose);
+    font-size:15px;
+    letter-spacing:0.02em;
+    margin-bottom:18px;
+  }
+
+  .hero h1{
+    font-size:clamp(48px, 9vw, 96px);
+    color:var(--deep-rose);
+    line-height:1.15;
+    margin-bottom:20px;
+  }
+
+  .hero .since{
+    color:var(--ink-soft);
+    font-size:17px;
+    margin-bottom:56px;
+  }
+
+  .counter{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+
+  .counter .box{
+    background:var(--white);
+    border:1px solid var(--rose-soft);
+    border-radius:14px;
+    padding:22px 20px;
+    min-width:92px;
+    box-shadow:0 8px 24px -12px rgba(184,111,106,0.35);
+  }
+
+  .counter .num{
+    font-family:'Aref Ruqaa',serif;
+    font-size:38px;
+    color:var(--deep-rose);
+    display:block;
+  }
+
+  .counter .label{
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-top:4px;
+    display:block;
+  }
+
+  .hero-photo{
+    margin-top:56px;
+    width:220px;
+    height:220px;
+    border-radius:50%;
+    border:6px solid var(--white);
+    box-shadow:0 14px 40px -14px rgba(184,111,106,0.5);
+    background:linear-gradient(135deg, var(--rose-soft), var(--gold));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--white);
+    font-size:14px;
+    text-align:center;
+    overflow:hidden;
+  }
+  .hero-photo img{width:100%;height:100%;object-fit:cover;}
+
+  .section-title{
+    text-align:center;
+    font-size:clamp(30px,5vw,42px);
+    color:var(--deep-rose);
+    margin-bottom:12px;
+  }
+  .section-sub{
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:15px;
+    margin-bottom:60px;
+  }
+
+  .timeline{
+    position:relative;
+    padding-right:2px;
+  }
+  .timeline::before{
+    content:'';
+    position:absolute;
+    right:19px;
+    top:8px;
+    bottom:8px;
+    width:2px;
+    background:linear-gradient(to bottom, var(--rose-soft), var(--gold));
+  }
+  .t-item{
+    position:relative;
+    padding-right:56px;
+    margin-bottom:48px;
+  }
+  .t-item:last-child{margin-bottom:0;}
+  .t-dot{
+    position:absolute;
+    right:11px;
+    top:4px;
+    width:18px;
+    height:18px;
+    border-radius:50%;
+    background:var(--white);
+    border:3px solid var(--deep-rose);
+  }
+  .t-date{
+    color:var(--gold);
+    font-size:14px;
+    font-weight:600;
+    margin-bottom:6px;
+  }
+  .t-title{
+    font-size:22px;
+    color:var(--ink);
+    margin-bottom:8px;
+  }
+  .t-desc{
+    color:var(--ink-soft);
+    font-size:15px;
+    max-width:600px;
+  }
+
+  .gallery{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+  }
+  .g-item{
+    aspect-ratio:1;
+    border-radius:16px;
+    background:linear-gradient(135deg, var(--rose-soft), var(--cream-deep));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--deep-rose);
+    font-size:13px;
+    text-align:center;
+    cursor:pointer;
+    overflow:hidden;
+    transition:transform .25s ease;
+    border:1px solid var(--rose-soft);
+  }
+  .g-item:hover{transform:translateY(-4px);}
+  .g-item img{width:100%;height:100%;object-fit:cover;}
+
+  @media (max-width:640px){
+    .gallery{grid-template-columns:repeat(2,1fr);}
+  }
+
+  .lightbox{
+    position:fixed;
+    inset:0;
+    background:rgba(74,53,53,0.85);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:50;
+    padding:24px;
+  }
+  .lightbox.open{display:flex;}
+  .lightbox-inner{
+    background:var(--white);
+    border-radius:18px;
+    max-width:480px;
+    width:100%;
+    padding:28px;
+    text-align:center;
+  }
+  .lightbox-inner .frame{
+    width:100%;
+    aspect-ratio:1;
+    border-radius:12px;
+    background:linear-gradient(135deg, var(--rose-soft), var(--cream-deep));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--deep-rose);
+    margin-bottom:16px;
+    overflow:hidden;
+  }
+  .lightbox-inner .frame img{width:100%;height:100%;object-fit:cover;}
+  .lightbox-inner p{color:var(--ink-soft);font-size:15px;margin-bottom:16px;}
+  .close-btn{
+    background:var(--deep-rose);
+    color:var(--white);
+    border:none;
+    padding:10px 28px;
+    border-radius:30px;
+    font-family:'Vazirmatn',sans-serif;
+    font-size:14px;
+    cursor:pointer;
+  }
+
+  .msg-card{
+    background:var(--white);
+    border-radius:20px;
+    padding:48px 36px;
+    text-align:center;
+    box-shadow:0 14px 40px -18px rgba(184,111,106,0.4);
+    border:1px solid var(--rose-soft);
+  }
+  .msg-text{
+    font-size:20px;
+    color:var(--ink);
+    min-height:90px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:opacity .3s ease;
+  }
+  .msg-btn{
+    margin-top:24px;
+    background:transparent;
+    border:2px solid var(--deep-rose);
+    color:var(--deep-rose);
+    padding:11px 30px;
+    border-radius:30px;
+    font-family:'Vazirmatn',sans-serif;
+    font-size:14px;
+    cursor:pointer;
+    transition:background .2s ease, color .2s ease;
+  }
+  .msg-btn:hover{background:var(--deep-rose);color:var(--white);}
+
+  .empty-note{
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:14px;
+    padding:20px;
+  }
+
+  footer{
+    text-align:center;
+    padding:50px 24px 70px;
+    color:var(--ink-soft);
+    font-size:14px;
+    position:relative;
+    z-index:1;
+  }
+  footer .heart-ico{color:var(--rose);}
+</style>
+</head>
+<body>
+
+<div class="hearts-bg" id="heartsBg"></div>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="eyebrow">قصة حب</div>
+  <h1 id="namesTitle">...</h1>
+  <div class="since" id="sinceText">بنحمّل الداتا...</div>
+
+  <div class="counter" id="counter">
+    <div class="box"><span class="num" id="numYears">0</span><span class="label">سنة</span></div>
+    <div class="box"><span class="num" id="numMonths">0</span><span class="label">شهر</span></div>
+    <div class="box"><span class="num" id="numDays">0</span><span class="label">يوم</span></div>
+    <div class="box"><span class="num" id="numHours">0</span><span class="label">ساعة</span></div>
+  </div>
+
+  <div class="hero-photo" id="heroPhoto">صورة</div>
+</section>
+
+<!-- ============ TIMELINE ============ -->
+<section id="story">
+  <h2 class="section-title">قصتنا</h2>
+  <p class="section-sub">كل محطة فيها حاجة نفتكرها</p>
+  <div class="timeline" id="timelineList">
+    <p class="empty-note">بنحمّل قصتكم...</p>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section id="gallery">
+  <h2 class="section-title">صورنا</h2>
+  <p class="section-sub">دوس على أي صورة تكبر</p>
+  <div class="gallery" id="galleryGrid">
+    <p class="empty-note">بنحمّل الصور...</p>
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-inner">
+    <div class="frame" id="lightboxFrame">صورة</div>
+    <p id="lightboxCaption"></p>
+    <button class="close-btn" id="closeLightbox">قفل</button>
+  </div>
+</div>
+
+<!-- ============ MESSAGES ============ -->
+<section id="messages">
+  <h2 class="section-title">رسايل ليكي</h2>
+  <p class="section-sub">دوس على الزرار كل مرة تحب تقرا رسالة جديدة</p>
+
+  <div class="msg-card">
+    <div class="msg-text" id="msgText">بنحمّل الرسايل...</div>
+    <button class="msg-btn" id="msgBtn">رسالة جديدة</button>
+  </div>
+</section>
+
+<footer id="footerText">
+  صنعت بحب <span class="heart-ico">♥</span>
+</footer>
+
+<script>
+  // ============ إعداد الاتصال بـ Supabase ============
+  const SUPABASE_URL = "https://lwmgwzktownbeshbfyal.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx3bWd3emt0b3duYmVzaGJmeWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3NjE5NjMsImV4cCI6MjA5ODMzNzk2M30.xNxux8tEZ6a-m6s4ecIVhqKcYXfaXhmYd5jQDTHRtKQ";
+
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  let startDate = new Date("2023-01-01T00:00:00Z");
+  let messagesList = [];
+  let lastMsgIndex = -1;
+
+  // ============ قلوب متحركة في الخلفية ============
+  const heartsBg = document.getElementById("heartsBg");
+  for(let i=0;i<14;i++){
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.textContent = "♥";
+    h.style.left = Math.random()*100 + "%";
+    h.style.animationDuration = (14 + Math.random()*14) + "s";
+    h.style.animationDelay = (Math.random()*14) + "s";
+    h.style.fontSize = (14 + Math.random()*16) + "px";
+    heartsBg.appendChild(h);
+  }
+
+  // ============ عدّاد الوقت ============
+  function updateCounter(){
+    const now = new Date();
+    let years = now.getFullYear() - startDate.getFullYear();
+    let months = now.getMonth() - startDate.getMonth();
+    let days = now.getDate() - startDate.getDate();
+    let hours = now.getHours() - startDate.getHours();
+
+    if(hours < 0){ hours += 24; days -= 1; }
+    if(days < 0){
+      const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+      days += prevMonth;
+      months -= 1;
+    }
+    if(months < 0){ months += 12; years -= 1; }
+    if(years < 0){ years = 0; months = 0; days = 0; hours = 0; }
+
+    document.getElementById("numYears").textContent = years;
+    document.getElementById("numMonths").textContent = months;
+    document.getElementById("numDays").textContent = days;
+    document.getElementById("numHours").textContent = hours;
+  }
+
+  function formatDateArabic(d){
+    return d.toLocaleDateString("ar-EG", { year:'numeric', month:'long', day:'numeric' });
+  }
+
+  // ============ تحميل الإعدادات ============
+  async function loadSettings(){
+    const { data, error } = await sb.from("settings").select("*").eq("id", 1).single();
+    if(error || !data){
+      document.getElementById("namesTitle").textContent = "مصطفى & رنا";
+      document.getElementById("sinceText").textContent = "تعذّر تحميل الإعدادات";
+      return;
+    }
+    document.getElementById("namesTitle").textContent = `${data.name1} & ${data.name2}`;
+    startDate = new Date(data.start_date);
+    document.getElementById("sinceText").textContent = `من ${formatDateArabic(startDate)} وإحنا مع بعض`;
+    document.getElementById("footerText").innerHTML = `صنعت بحب <span class="heart-ico">♥</span> ${data.name1} و ${data.name2}`;
+
+    const heroPhoto = document.getElementById("heroPhoto");
+    if(data.hero_image_url){
+      heroPhoto.innerHTML = `<img src="${data.hero_image_url}" alt="">`;
+    } else {
+      heroPhoto.textContent = "ضيف صورتكم من Supabase";
+    }
+
+    updateCounter();
+    setInterval(updateCounter, 60000);
+  }
+
+  // ============ تحميل التايم لاين ============
+  async function loadTimeline(){
+    const container = document.getElementById("timelineList");
+    const { data, error } = await sb.from("timeline").select("*").order("sort_order", { ascending:true });
+    if(error || !data || data.length === 0){
+      container.innerHTML = `<p class="empty-note">مفيش محطات لسه، ضيفها من جدول timeline في Supabase</p>`;
+      return;
+    }
+    container.innerHTML = data.map(item => `
+      <div class="t-item">
+        <div class="t-dot"></div>
+        <div class="t-date">${item.date_label}</div>
+        <div class="t-title">${item.title}</div>
+        <div class="t-desc">${item.description || ""}</div>
+      </div>
+    `).join("");
+  }
+
+  // ============ تحميل الجاليري ============
+  async function loadGallery(){
+    const grid = document.getElementById("galleryGrid");
+    const { data, error } = await sb.from("gallery").select("*").order("sort_order", { ascending:true });
+    if(error || !data || data.length === 0){
+      grid.innerHTML = `<p class="empty-note">مفيش صور لسه، ضيفها من جدول gallery في Supabase</p>`;
+      return;
+    }
+    grid.innerHTML = data.map(item => `
+      <div class="g-item" data-caption="${(item.caption || "").replace(/"/g,'&quot;')}" data-img="${item.image_url}">
+        <img src="${item.image_url}" alt="${item.caption || ""}">
+      </div>
+    `).join("");
+
+    attachLightbox();
+  }
+
+  // ============ تحميل الرسايل ============
+  async function loadMessages(){
+    const { data, error } = await sb.from("messages").select("*");
+    const msgText = document.getElementById("msgText");
+    if(error || !data || data.length === 0){
+      msgText.textContent = "مفيش رسايل لسه، ضيفها من جدول messages في Supabase";
+      return;
+    }
+    messagesList = data.map(m => m.text);
+    msgText.textContent = messagesList[0];
+  }
+
+  // ============ Lightbox ============
+  function attachLightbox(){
+    const lightbox = document.getElementById("lightbox");
+    const lightboxFrame = document.getElementById("lightboxFrame");
+    const lightboxCaption = document.getElementById("lightboxCaption");
+
+    document.querySelectorAll(".g-item").forEach(item=>{
+      item.addEventListener("click", ()=>{
+        lightboxFrame.innerHTML = `<img src="${item.getAttribute("data-img")}" alt="">`;
+        lightboxCaption.textContent = item.getAttribute("data-caption") || "";
+        lightbox.classList.add("open");
+      });
+    });
+  }
+
+  document.getElementById("closeLightbox").addEventListener("click", ()=>{
+    document.getElementById("lightbox").classList.remove("open");
+  });
+  document.getElementById("lightbox").addEventListener("click", (e)=>{
+    if(e.target.id === "lightbox") e.target.classList.remove("open");
+  });
+
+  // ============ زرار رسالة جديدة ============
+  document.getElementById("msgBtn").addEventListener("click", ()=>{
+    if(messagesList.length === 0) return;
+    let idx;
+    do{ idx = Math.floor(Math.random()*messagesList.length); } while(idx === lastMsgIndex && messagesList.length > 1);
+    lastMsgIndex = idx;
+
+    const msgText = document.getElementById("msgText");
+    msgText.style.opacity = 0;
+    setTimeout(()=>{
+      msgText.textContent = messagesList[idx];
+      msgText.style.opacity = 1;
+    }, 250);
+  });
+
+  // ============ تشغيل كل حاجة ============
+  loadSettings();
+  loadTimeline();
+  loadGallery();
+  loadMessages();
+</script>
+
+</body>
+</html>
